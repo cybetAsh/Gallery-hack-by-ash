@@ -3,459 +3,388 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DRK OFC JOIN APLICATION</title>
-
-  <!-- Google Font for cyber look -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
+  <title>DRK OFC - Join Application</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Libre+Franklin:wght@300;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b0f16;
-      --panel:#0f1720;
-      --neon-red:#ff0033;
-      --accent:#00ffff;
+      --bg:#0f0f10;
+      --card:#111214;
+      --accent:#d80000; /* red accent */
+      --muted:#bfc4c8;
       --glass: rgba(255,255,255,0.03);
-      --glass-2: rgba(255,255,255,0.02);
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;font-family: 'Libre Franklin', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
     body{
       margin:0;
-      background:
-        radial-gradient(1200px 400px at 10% 10%, rgba(255,0,51,0.06), transparent 10%),
-        radial-gradient(900px 300px at 90% 90%, rgba(0,255,255,0.03), transparent 10%),
-        var(--bg);
-      color:#e6eef6;
-      font-family: 'Share Tech Mono', monospace;
-      -webkit-font-smoothing:antialiased;
       min-height:100vh;
+      background: linear-gradient(180deg,#0b0b0c 0%, #121212 100%);
       display:flex;
       align-items:center;
       justify-content:center;
+      color:#e9eef2;
       padding:24px;
     }
 
-    .card{
+    .wrap{
       width:100%;
       max-width:920px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;
-      padding:18px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(255,0,51,0.03) inset;
-      border: 1px solid rgba(255,255,255,0.04);
       display:grid;
       grid-template-columns: 380px 1fr;
-      gap:18px;
-      align-items:start;
+      gap:28px;
     }
 
-    /* Login pane */
-    .login {
-      padding:18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.03);
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
     }
-    .login h2{
-      font-family:'Orbitron', sans-serif;
-      letter-spacing:2px;
-      margin:6px 0 12px;
-      color:var(--accent);
-      font-size:20px;
-      text-shadow: 0 0 8px rgba(0,255,255,0.06);
-    }
-    .field{
+
+    /* LOGIN CARD */
+    .login-card{
       display:flex;
       flex-direction:column;
-      gap:6px;
-      margin-bottom:12px;
-    }
-    label{font-size:12px;color:#9fb6c9}
-    input[type="text"], input[type="password"], input[type="tel"], textarea {
-      background:var(--glass);
-      border:1px solid rgba(255,255,255,0.03);
-      padding:10px 12px;
-      border-radius:8px;
-      color:#eaf6ff;
-      font-family:inherit;
-      outline:none;
-      transition:box-shadow .18s, transform .12s;
-    }
-    input:focus, textarea:focus{
-      box-shadow: 0 0 18px rgba(0,255,255,0.04);
-      transform:translateY(-1px);
-    }
-
-    .login .btn{
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:10px;
-      background:linear-gradient(90deg, rgba(255,0,51,0.95), rgba(255,80,80,0.85));
-      border:1px solid rgba(255,0,51,0.6);
-      color:white;
-      cursor:pointer;
-      font-weight:700;
-      letter-spacing:1px;
-      box-shadow: 0 6px 24px rgba(255,0,51,0.12);
-    }
-
-    /* Main form area (hidden until login) */
-    .main{
-      padding:18px;
-      border-radius:10px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
-      border:1px solid rgba(255,255,255,0.03);
-      display:flex;
-      flex-direction:column;
+      align-items:center;
       gap:12px;
     }
-
-    .headline{
-      font-family:'Orbitron', sans-serif;
-      font-size:18px;
-      color:var(--neon-red);
-      letter-spacing:1px;
-      text-shadow: 0 0 10px rgba(255,0,51,0.18);
+    .avatar-wrap{
+      position:relative;
+      width:96px;
+      height:96px;
+      border-radius:50%;
+      overflow:hidden;
+      background:linear-gradient(135deg,var(--glass), rgba(255,255,255,0.02));
+      border:4px solid rgba(255,255,255,0.03);
     }
-
-    .subtitle{
-      font-size:12px;color:#9fb6c9;margin-bottom:6px;
-    }
-
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-
-    .upload-row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .file-box{
-      flex:1 1 100%;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .preview{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+    .avatar-wrap img{ width:100%; height:100%; object-fit:cover; display:block;}
+    .avatar-input{
       margin-top:8px;
-    }
-    .preview img{
-      width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 12px rgba(255,0,51,0.04) inset;
-    }
-
-    .send-row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+      text-align:center;
     }
 
-    .send-btn{
-      background: linear-gradient(90deg, #ff0033, #ff4d66);
+    .field{ width:100%; margin-top:6px; }
+    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    input[type="text"], input[type="password"], input[type="tel"], input[type="file"]{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.05);
+      color: #e9eef2;
+      outline:none;
+    }
+    input[type="file"]{ padding:8px; }
+    .btn{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:10px;
+      background:var(--accent);
       color:white;
-      padding:12px 16px;border-radius:12px;border:1px solid rgba(255,0,51,0.6);
-      font-weight:800;cursor:pointer;letter-spacing:1px;
-      box-shadow: 0 10px 30px rgba(255,0,51,0.12);
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(216,0,0,0.18);
+    }
+    .note { font-size:12px; color:#ffdddd; text-align:center; margin-top:6px; }
+
+    /* APPLICATION CARD */
+    .app-head{
+      text-align:center;
+      margin-bottom:12px;
+    }
+    .app-title{
+      font-family: 'Montserrat', sans-serif;
+      font-size:28px;
+      letter-spacing:1px;
+      font-weight:800;
+      color:var(--accent);
+      margin:0;
+    }
+    .app-sub{
+      color:var(--muted);
+      margin-top:6px;
+      font-size:13px;
     }
 
-    .ghost-btn{
-      padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);
-      background:transparent;color:#cfeff9;cursor:pointer;
+    .form-grid{ display:grid; gap:12px; margin-top:8px; }
+    .small{ font-size:13px; color:var(--muted); margin-bottom:6px; }
+    .required{ color:#ff6b6b; margin-left:6px; font-weight:700; font-size:12px; }
+
+    .success{
+      display:none;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(24,120,24,0.12), rgba(24,120,24,0.06));
+      color:#cfead1;
+      border:1px solid rgba(24,120,24,0.14);
     }
 
-    .note{
-      font-size:12px;color:#9fb6c9;
-    }
+    footer { text-align:center; margin-top:12px; color:var(--muted); font-size:12px; }
 
-    /* status area */
-    .status-box{
-      background:var(--glass-2);
-      border-radius:10px;padding:8px;border:1px dashed rgba(255,255,255,0.02);
-      font-size:13px;color:#d7eef8;
-      min-height:48px;
+    @media(max-width:880px){
+      .wrap{ grid-template-columns:1fr; }
     }
-
-    /* small screens */
-    @media (max-width:880px){
-      .card{grid-template-columns:1fr; padding:12px}
-    }
-
   </style>
 </head>
 <body>
-
-  <div class="card" role="application" aria-label="DRK application">
-    <!-- Left: Login -->
-    <div class="login" id="loginPane" aria-hidden="false">
-      <h2>DRK OFFICIAL LOGIN</h2>
-
-      <div class="field">
-        <label for="username">USERNAME</label>
-        <input id="username" type="text" autocomplete="username" placeholder="Enter username (case & spaces sensitive)">
+  <div class="wrap">
+    <!-- LOGIN -->
+    <div class="card login-card" id="loginCard">
+      <div class="avatar-wrap" title="Upload profile photo (optional)">
+        <img id="loginAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect fill='%230f0f10' width='100%25' height='100%25'/><text x='50%25' y='50%25' fill='%23bbb' font-size='26' text-anchor='middle' dominant-baseline='middle'>DRK</text></svg>" alt="avatar">
+      </div>
+      <div class="avatar-input small">
+        <input id="avatarFile" type="file" accept="image/*">
       </div>
 
-      <div class="field">
-        <label for="password">PASSWORD</label>
-        <input id="password" type="password" autocomplete="current-password" placeholder="Enter password (case & spaces sensitive)">
-      </div>
-
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="btn" id="loginBtn">LOGIN</button>
-        <div style="font-size:12px;color:#9fb6c9">
-          <div>Valid credential: <strong style="color:var(--neon-red)">DRK OFFICIAL</strong></div>
-          <div style="margin-top:6px">(Exact capitals & spaces required)</div>
+      <div style="width:100%; margin-top:6px;">
+        <div class="field">
+          <label>USERNAME</label>
+          <input id="username" type="text" placeholder="Type username exactly (DRK OFFICIAL)">
         </div>
+        <div class="field">
+          <label>PASSWORD</label>
+          <input id="password" type="password" placeholder="Type password exactly (DRK OFFICIAL)">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="btn" id="loginBtn">LOGIN</button>
+          <button class="btn" id="clearBtn" style="background:#525252">CLEAR</button>
+        </div>
+        <div class="note" id="loginNote">User & Password must be <strong>DRK OFFICIAL</strong> (spaces & capitals important).</div>
       </div>
-
-      <div id="loginMsg" style="margin-top:12px;font-size:13px;color:#fca5a5;display:none;"></div>
     </div>
 
-    <!-- Right: Main form (hidden until login) -->
-    <div class="main" id="mainPane" style="display:none;">
-      <div>
-        <div class="headline">DRK OFC JOIN APLICATION</div>
-        <div class="subtitle">ඔබගේ අයදුම්පත මෙහි පුරවන්න — Your application</div>
+    <!-- APPLICATION -->
+    <div class="card" id="appCard" style="display:none;">
+      <div class="app-head">
+        <h1 class="app-title">DRK OFC JOIN APLICATION</h1>
+        <div class="app-sub">ඔබගේ විස්තර පුරවන්න — "ස්ටේටස් විව්ස්" හා "WhatsApp" අංකය සහ ෆොටෝ 2 ක් අවශ්‍යයි.</div>
       </div>
 
-      <div class="form-grid" role="form" aria-labelledby="formTitle">
+      <form id="applicationForm" class="form-grid">
         <div>
-          <label class="subtitle">YOUR STATUS VIEWS NAME</label>
-          <input id="statusName" type="text" placeholder="ස්ටේටස් විව්ස් නම ඇතුලත් කරන්න" />
-        </div>
-
-        <div>
-          <label class="subtitle">YOUR WHATSAPP NUMBER</label>
-          <input id="waNumber" type="tel" placeholder="ඔයාගෙ වට්සැප් අන්කය  දාන්න (e.g. +9477...)" />
+          <label class="small">YOUR STATUS VIEWS NAME</label>
+          <input id="statusName" name="statusName" type="text" placeholder="ස්ටේටස් විව්ස් නම ඇතුලත් කරන්න" required>
         </div>
 
         <div>
-          <label class="subtitle">UPLOAD YOUR 2 FACE PHOTOS [ මෙය අනිවාර්ය්‍ය වේ ]</label>
-          <div class="upload-row">
-            <div class="file-box">
-              <input id="photo1" type="file" accept="image/*" />
-            </div>
-            <div class="file-box">
-              <input id="photo2" type="file" accept="image/*" />
-            </div>
-            <div class="file-box">
-              <input id="photo3" type="file" accept="image/*" />
-            </div>
-          </div>
-          <div class="preview" id="previewArea" aria-live="polite"></div>
+          <label class="small">YOUR WHATSAPP NUMBER</label>
+          <input id="whatsapp" name="whatsapp" type="tel" placeholder="ඔයාගෙ වට්සැප් අන්කය  දාන්න" required>
         </div>
 
         <div>
-          <label class="subtitle">YOUR NAME (DISPLAY)</label>
-          <input id="displayName" type="text" placeholder="ඔයාගෙ නම මෙහි දාන්න" />
+          <label class="small">UPLOAD YOUR FACE PHOTOS <span class="required">[ මෙය අනිවාර්ය්‍ය වේ ]</span></label>
+          <input id="face1" name="face1" type="file" accept="image/*" required>
+          <div style="height:8px;"></div>
+          <input id="face2" name="face2" type="file" accept="image/*" required>
         </div>
 
         <div>
-          <label class="subtitle">MESSAGE PREVIEW / STATUS</label>
-          <div class="status-box" id="messagePreview">ඔබගේ ඇතුලත් කිරීම මෙහි පෙන්වයි...</div>
+          <label class="small">COMMENTS (optional)</label>
+          <input id="comments" name="comments" type="text" placeholder="ඔබට කියන්න තියෙනවම්">
         </div>
 
-        <div class="send-row">
-          <button class="send-btn" id="sendBtn">SEND APPLICATION</button>
-          <button class="ghost-btn" id="zipBtn" title="Download images as zip">DOWNLOAD PHOTOS ZIP</button>
-          <div style="flex:1"></div>
-          <div class="note">After clicking SEND, WhatsApp Web will open to send message to <strong>+94767436762</strong>. Attach photos (or download zip and attach).</div>
+        <div style="display:flex; gap:10px; align-items:center; margin-top:6px;">
+          <button type="button" class="btn" id="sendBtn">SEND APPLICATION</button>
+          <div id="statusMsg" class="success">Application prepared. පසුගිය සඳහන් සඳහාවට බලන්න.</div>
         </div>
 
-      </div>
+        <div style="margin-top:6px; font-size:13px; color:var(--muted);">
+          <strong>Note:</strong> This form will try to <em>automatically</em> send an email using <code>EmailJS</code> if you configure your EmailJS credentials in the script (see comments). If not configured, a ZIP file (containing photos + info) will be created for download and your mail client will be opened to send the application to <strong>dinethnimsara281@gmail.com</strong>. (Browser security prevents auto-attaching files into the user's mail client.)
+        </div>
+      </form>
 
-      <div id="afterSendMsg" style="margin-top:10px;font-size:13px;color:#a8ffd9;display:none;"></div>
+      <footer>DRK OFFC • High quality submission — red accent UI</footer>
     </div>
   </div>
 
-  <!-- JS: logic -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <!-- Libraries for fallback zip creation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <!-- Optional EmailJS SDK: to enable automatic email sending from client-side (requires you to sign-up at https://www.emailjs.com and replace IDs below) -->
+  <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
 
   <script>
-    // Elements
+    // ---------- LOGIN LOGIC ----------
+    const LOGIN_USER = "DRK OFFICIAL";
+    const LOGIN_PASS = "DRK OFFICIAL";
+
     const loginBtn = document.getElementById('loginBtn');
+    const clearBtn = document.getElementById('clearBtn');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
-    const loginMsg = document.getElementById('loginMsg');
-    const loginPane = document.getElementById('loginPane');
-    const mainPane = document.getElementById('mainPane');
+    const loginCard = document.getElementById('loginCard');
+    const appCard = document.getElementById('appCard');
+    const avatarFile = document.getElementById('avatarFile');
+    const loginAvatar = document.getElementById('loginAvatar');
 
-    const statusName = document.getElementById('statusName');
-    const waNumber = document.getElementById('waNumber');
-    const displayName = document.getElementById('displayName');
-    const photo1 = document.getElementById('photo1');
-    const photo2 = document.getElementById('photo2');
-    const photo3 = document.getElementById('photo3');
-    const previewArea = document.getElementById('previewArea');
-    const messagePreview = document.getElementById('messagePreview');
-    const sendBtn = document.getElementById('sendBtn');
-    const zipBtn = document.getElementById('zipBtn');
-    const afterSendMsg = document.getElementById('afterSendMsg');
+    avatarFile.addEventListener('change', e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const url = URL.createObjectURL(f);
+      loginAvatar.src = url;
+    });
 
-    const TARGET_WHATSAPP = '94767436762'; // without plus for wa.me link
-
-    // enforce exact credentials: must equal "DRK OFFICIAL"
-    function checkCredentials(u, p){
-      return u === 'DRK OFFICIAL' && p === 'DRK OFFICIAL';
-    }
+    clearBtn.addEventListener('click', ()=> {
+      usernameInput.value = '';
+      passwordInput.value = '';
+      avatarFile.value = '';
+      loginAvatar.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect fill='%230f0f10' width='100%25' height='100%25'/><text x='50%25' y='50%25' fill='%23bbb' font-size='26' text-anchor='middle' dominant-baseline='middle'>DRK</text></svg>";
+    });
 
     loginBtn.addEventListener('click', () => {
-      const u = usernameInput.value;
-      const p = passwordInput.value;
-      if(checkCredentials(u,p)){
-        loginMsg.style.display = 'none';
-        loginPane.style.display = 'none';
-        mainPane.style.display = 'flex';
-        // set default display name if empty
-        if(!displayName.value) displayName.value = 'DRK OFFICIAL';
+      const u = usernameInput.value.trim();
+      const p = passwordInput.value.trim();
+
+      // Exact match including spaces and capitals => use direct equality
+      if (u === LOGIN_USER && p === LOGIN_PASS) {
+        // success
+        loginCard.style.display = 'none';
+        appCard.style.display = 'block';
+        window.scrollTo({ top:0, behavior:'smooth' });
       } else {
-        loginMsg.style.display = 'block';
-        loginMsg.textContent = 'Login failed — credentials must exactly be "DRK OFFICIAL" (with capitals & space).';
+        alert('Login failed — username/password must be exactly: DRK OFFICIAL (spaces and capitals required).');
       }
     });
 
-    // image previews
-    function updatePreviews(){
-      previewArea.innerHTML = '';
-      [photo1.files[0], photo2.files[0], photo3.files[0]].forEach((f, idx) => {
-        if(!f) return;
-        const img = document.createElement('img');
-        img.alt = 'photo-'+(idx+1);
-        const url = URL.createObjectURL(f);
-        img.src = url;
-        previewArea.appendChild(img);
-      });
-      updateMessagePreview();
+    // ---------- APPLICATION SUBMIT LOGIC ----------
+    const sendBtn = document.getElementById('sendBtn');
+    const applicationForm = document.getElementById('applicationForm');
+    const statusMsg = document.getElementById('statusMsg');
+
+    // ---- EmailJS configuration (optional) ----
+    // To enable auto-email from client, sign up at https://www.emailjs.com
+    // Then replace the placeholders below:
+    const USE_EMAILJS = false; // set true if you set EmailJS IDs
+    const EMAILJS_USER_ID = 'YOUR_EMAILJS_USER_ID';      // e.g. 'user_xxx'
+    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';       // e.g. 'service_xxx'
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // e.g. 'template_xxx'
+    // Template should accept fields: statusName, whatsapp, comments, and attachments (file inputs named face1, face2)
+    if (USE_EMAILJS && (EMAILJS_USER_ID && EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID')) {
+      try {
+        emailjs.init(EMAILJS_USER_ID);
+      } catch(e){
+        console.warn('EmailJS init failed', e);
+      }
     }
 
-    [photo1, photo2, photo3, statusName, waNumber, displayName].forEach(el => {
-      el.addEventListener('input', updateMessagePreview);
-    });
-    [photo1, photo2, photo3].forEach(el => el.addEventListener('change', updatePreviews));
-
-    function updateMessagePreview(){
-      const nm = displayName.value || '(no name)';
-      const st = statusName.value || '(no status name)';
-      const wa = waNumber.value || '(no whatsapp)';
-      const lines = [
-        '--- DRK OFC JOIN APLICATION ---',
-        'Name: ' + nm,
-        'Status Views Name: ' + st,
-        'WhatsApp (provided): ' + wa,
-        '',
-        'Photos attached: ' + (
-          (photo1.files[0]?1:0) + ',' + (photo2.files[0]?1:0) + ',' + (photo3.files[0]?1:0)
-        ),
-        '',
-        'Sent to: +'+TARGET_WHATSAPP,
-        '--- end ---'
-      ];
-      messagePreview.textContent = lines.join('\\n');
-    }
-
-    // send action
     sendBtn.addEventListener('click', async () => {
       // validate required fields
-      if(!displayName.value.trim()){
-        alert('Please enter your display name.');
+      const statusName = document.getElementById('statusName').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const face1 = document.getElementById('face1').files[0];
+      const face2 = document.getElementById('face2').files[0];
+      const comments = document.getElementById('comments').value.trim();
+
+      if (!statusName || !whatsapp) {
+        alert('කරුණාකර ඔබේ නම සහ වට්සැප් අංකය පුරවන්න.');
         return;
       }
-      if(!statusName.value.trim()){
-        alert('Please enter status views name.');
-        return;
-      }
-      if(!waNumber.value.trim()){
-        alert('Please enter your WhatsApp number.');
-        return;
-      }
-      if(!photo1.files[0] || !photo2.files[0] || !photo3.files[0]){
-        alert('Please upload all required photos (3).');
+      if (!face1 || !face2) {
+        alert('කරුණාකර දෙපේාරූ ෆොටෝ 2 ක් upload කරන්න — මෙය අනිවාර්ය වේ.');
         return;
       }
 
-      // prepare message
-      const msgLines = [
-        'DRK OFC JOIN APLICATION',
-        'Name: ' + displayName.value.trim(),
-        'Status Views Name: ' + statusName.value.trim(),
-        'Provided WhatsApp: ' + waNumber.value.trim(),
-        '',
-        'Photos: (please attach photos or attach the downloaded ZIP)'
-      ];
-      const msg = encodeURIComponent(msgLines.join('\\n'));
+      // If EmailJS is configured (user's choice), try to send directly
+      if (USE_EMAILJS && EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID' && EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID') {
+        try {
+          // Build a FormData and use emailjs sendForm or send with attachments
+          // NOTE: EmailJS client-side attachment support varies — follow EmailJS docs and create a template with file inputs
+          const fd = new FormData();
+          fd.append('statusName', statusName);
+          fd.append('whatsapp', whatsapp);
+          fd.append('comments', comments);
+          fd.append('face1', face1, face1.name);
+          fd.append('face2', face2, face2.name);
 
-      // create ZIP for convenience (start in background)
+          // emailjs.sendForm expects a <form>. We'll create a temporary form.
+          const tmpForm = document.createElement('form');
+          tmpForm.style.display = 'none';
+          tmpForm.appendChild(document.getElementById('statusName').cloneNode());
+          tmpForm.appendChild(document.getElementById('whatsapp').cloneNode());
+          // instead, use emailjs.send (advanced) — but EmailJS SDK doc specifics are needed.
+          // For simplicity we'll attempt sendForm:
+          emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, applicationForm)
+          .then(function(){ 
+            alert('Application sent automatically via EmailJS to dinethnimsara281@gmail.com');
+            statusMsg.style.display = 'block';
+          }, function(err){
+            console.error('EmailJS error:', err);
+            alert('EmailJS send failed — falling back to manual download + mailto.');
+            fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2});
+          });
+
+          return;
+        } catch (e) {
+          console.warn('EmailJS exception', e);
+          // fallback below
+        }
+      }
+
+      // Default fallback: create ZIP (info + images) and open mail client with mailto to let user attach the zip.
+      fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2});
+    });
+
+    async function fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2}) {
       try {
-        await createZipAndOfferDownload(); // create and trigger download automatically
-      } catch (e){
-        console.warn('zip failed', e);
+        const zip = new JSZip();
+        // add text info file
+        const infoTxt = `STATUS NAME: ${statusName}\nWHATSAPP: ${whatsapp}\nCOMMENTS: ${comments}\nSUBMIT TO: dinethnimsara281@gmail.com\nSUBMITTED_AT: ${new Date().toISOString()}\n`;
+        zip.file("application_info.txt", infoTxt);
+
+        // add images as-is
+        const f1 = await readFileAsArrayBuffer(face1);
+        const f2 = await readFileAsArrayBuffer(face2);
+        zip.file(sanitizeFilename(face1.name || 'face1.jpg'), f1);
+        zip.file(sanitizeFilename(face2.name || 'face2.jpg'), f2);
+
+        const blob = await zip.generateAsync({type:"blob", compression: "DEFLATE", compressionOptions:{level:6}});
+        const filename = `DRK_application_${Date.now()}.zip`;
+        saveAs(blob, filename);
+
+        // prepare mailto
+        const subject = encodeURIComponent('DRK OFC - New Join Application');
+        const bodyLines = [
+          `Hello,`,
+          ``,
+          `I have prepared my application for DRK OFC.`,
+          `STATUS NAME: ${statusName}`,
+          `WHATSAPP: ${whatsapp}`,
+          `COMMENTS: ${comments}`,
+          ``,
+          `I have downloaded the application ZIP named: ${filename}`,
+          `Please attach it to an email and send to: dinethnimsara281@gmail.com`,
+          ``,
+          `-- Sent from DRK OFC application page`
+        ];
+        const body = encodeURIComponent(bodyLines.join('\n'));
+        // Open mail client
+        window.location.href = `mailto:dinethnimsara281@gmail.com?subject=${subject}&body=${body}`;
+
+        alert('ZIP downloaded. ඔබේ mail client එක open වෙන් අතර, download කල ZIP එක attach කරගෙන dinethnimsara281@gmail.com වෙත mail එක යවන්න.');
+        statusMsg.style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        alert('අවසන් fallback දෝෂයක් — console වල error බලන්න.');
       }
-
-      // open WhatsApp web with prefilled message for the specified target number
-      const url = 'https://wa.me/' + TARGET_WHATSAPP + '?text=' + msg;
-      window.open(url, '_blank');
-
-      afterSendMsg.style.display = 'block';
-      afterSendMsg.textContent = 'WhatsApp web opened to send message to +'+TARGET_WHATSAPP +'. If images are not attached automatically, please attach the downloaded photos.zip manually.';
-    });
-
-    // zip creation & download
-    async function createZipAndOfferDownload(){
-      const zip = new JSZip();
-      const files = [photo1.files[0], photo2.files[0], photo3.files[0]];
-      for(let i=0;i<files.length;i++){
-        const f = files[i];
-        const content = await fileToArrayBuffer(f);
-        zip.file('photo' + (i+1) + '_' + sanitizeFilename(f.name), content);
-      }
-      const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE'});
-      saveAs(blob, 'DRK_photos.zip');
-      return true;
     }
 
-    function fileToArrayBuffer(file){
-      return new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(r.result);
-        r.onerror = rej;
-        r.readAsArrayBuffer(file);
+    function readFileAsArrayBuffer(file) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsArrayBuffer(file);
       });
     }
-    function sanitizeFilename(n){
-      return n.replace(/[^a-z0-9A-Z\\.\\-\\_]/g, '_');
+
+    function sanitizeFilename(name) {
+      return name.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_').slice(0,120);
     }
-
-    // zipBtn manually
-    zipBtn.addEventListener('click', async () => {
-      if(!photo1.files[0] && !photo2.files[0] && !photo3.files[0]){
-        alert('No photos selected to zip.');
-        return;
-      }
-      try{
-        await createZipAndOfferDownload();
-      }catch(e){
-        alert('Error creating zip: ' + e);
-      }
-    });
-
-    // initial populate message preview
-    updateMessagePreview();
-
-    // Allow pressing Enter on login inputs
-    [usernameInput, passwordInput].forEach(inp => {
-      inp.addEventListener('keydown', (ev) => {
-        if(ev.key === 'Enter') loginBtn.click();
-      });
-    });
-
   </script>
-
 </body>
   </html>
