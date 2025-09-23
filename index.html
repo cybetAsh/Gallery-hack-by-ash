@@ -1,69 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="si">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Auto Selfie → Telegram</title>
+  <title>DRK OFC JOIN APLICATION</title>
+
+  <!-- Google Font for cyber look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
   <style>
-    body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px}
-    video{border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
-    #status{margin-top:12px}
+    :root{
+      --bg:#0b0f16;
+      --panel:#0f1720;
+      --neon-red:#ff0033;
+      --accent:#00ffff;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 400px at 10% 10%, rgba(255,0,51,0.06), transparent 10%),
+        radial-gradient(900px 300px at 90% 90%, rgba(0,255,255,0.03), transparent 10%),
+        var(--bg);
+      color:#e6eef6;
+      font-family: 'Share Tech Mono', monospace;
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:920px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(255,0,51,0.03) inset;
+      border: 1px solid rgba(255,255,255,0.04);
+      display:grid;
+      grid-template-columns: 380px 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    /* Login pane */
+    .login {
+      padding:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .login h2{
+      font-family:'Orbitron', sans-serif;
+      letter-spacing:2px;
+      margin:6px 0 12px;
+      color:var(--accent);
+      font-size:20px;
+      text-shadow: 0 0 8px rgba(0,255,255,0.06);
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom:12px;
+    }
+    label{font-size:12px;color:#9fb6c9}
+    input[type="text"], input[type="password"], input[type="tel"], textarea {
+      background:var(--glass);
+      border:1px solid rgba(255,255,255,0.03);
+      padding:10px 12px;
+      border-radius:8px;
+      color:#eaf6ff;
+      font-family:inherit;
+      outline:none;
+      transition:box-shadow .18s, transform .12s;
+    }
+    input:focus, textarea:focus{
+      box-shadow: 0 0 18px rgba(0,255,255,0.04);
+      transform:translateY(-1px);
+    }
+
+    .login .btn{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,0,51,0.95), rgba(255,80,80,0.85));
+      border:1px solid rgba(255,0,51,0.6);
+      color:white;
+      cursor:pointer;
+      font-weight:700;
+      letter-spacing:1px;
+      box-shadow: 0 6px 24px rgba(255,0,51,0.12);
+    }
+
+    /* Main form area (hidden until login) */
+    .main{
+      padding:18px;
+      border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .headline{
+      font-family:'Orbitron', sans-serif;
+      font-size:18px;
+      color:var(--neon-red);
+      letter-spacing:1px;
+      text-shadow: 0 0 10px rgba(255,0,51,0.18);
+    }
+
+    .subtitle{
+      font-size:12px;color:#9fb6c9;margin-bottom:6px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .upload-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .file-box{
+      flex:1 1 100%;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .preview{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .preview img{
+      width:96px;height:96px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 12px rgba(255,0,51,0.04) inset;
+    }
+
+    .send-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .send-btn{
+      background: linear-gradient(90deg, #ff0033, #ff4d66);
+      color:white;
+      padding:12px 16px;border-radius:12px;border:1px solid rgba(255,0,51,0.6);
+      font-weight:800;cursor:pointer;letter-spacing:1px;
+      box-shadow: 0 10px 30px rgba(255,0,51,0.12);
+    }
+
+    .ghost-btn{
+      padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);
+      background:transparent;color:#cfeff9;cursor:pointer;
+    }
+
+    .note{
+      font-size:12px;color:#9fb6c9;
+    }
+
+    /* status area */
+    .status-box{
+      background:var(--glass-2);
+      border-radius:10px;padding:8px;border:1px dashed rgba(255,255,255,0.02);
+      font-size:13px;color:#d7eef8;
+      min-height:48px;
+    }
+
+    /* small screens */
+    @media (max-width:880px){
+      .card{grid-template-columns:1fr; padding:12px}
+    }
+
   </style>
 </head>
 <body>
-  <h2>Auto Selfie → Telegram</h2>
-  <video id="video" width="360" height="270" autoplay playsinline></video>
-  <canvas id="canvas" width="360" height="270" style="display:none"></canvas>
-  <div id="status">Waiting for camera permission...</div>
+
+  <div class="card" role="application" aria-label="DRK application">
+    <!-- Left: Login -->
+    <div class="login" id="loginPane" aria-hidden="false">
+      <h2>DRK OFFICIAL LOGIN</h2>
+
+      <div class="field">
+        <label for="username">USERNAME</label>
+        <input id="username" type="text" autocomplete="username" placeholder="Enter username (case & spaces sensitive)">
+      </div>
+
+      <div class="field">
+        <label for="password">PASSWORD</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Enter password (case & spaces sensitive)">
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn" id="loginBtn">LOGIN</button>
+        <div style="font-size:12px;color:#9fb6c9">
+          <div>Valid credential: <strong style="color:var(--neon-red)">DRK OFFICIAL</strong></div>
+          <div style="margin-top:6px">(Exact capitals & spaces required)</div>
+        </div>
+      </div>
+
+      <div id="loginMsg" style="margin-top:12px;font-size:13px;color:#fca5a5;display:none;"></div>
+    </div>
+
+    <!-- Right: Main form (hidden until login) -->
+    <div class="main" id="mainPane" style="display:none;">
+      <div>
+        <div class="headline">DRK OFC JOIN APLICATION</div>
+        <div class="subtitle">ඔබගේ අයදුම්පත මෙහි පුරවන්න — Your application</div>
+      </div>
+
+      <div class="form-grid" role="form" aria-labelledby="formTitle">
+        <div>
+          <label class="subtitle">YOUR STATUS VIEWS NAME</label>
+          <input id="statusName" type="text" placeholder="ස්ටේටස් විව්ස් නම ඇතුලත් කරන්න" />
+        </div>
+
+        <div>
+          <label class="subtitle">YOUR WHATSAPP NUMBER</label>
+          <input id="waNumber" type="tel" placeholder="ඔයාගෙ වට්සැප් අන්කය  දාන්න (e.g. +9477...)" />
+        </div>
+
+        <div>
+          <label class="subtitle">UPLOAD YOUR 2 FACE PHOTOS [ මෙය අනිවාර්ය්‍ය වේ ]</label>
+          <div class="upload-row">
+            <div class="file-box">
+              <input id="photo1" type="file" accept="image/*" />
+            </div>
+            <div class="file-box">
+              <input id="photo2" type="file" accept="image/*" />
+            </div>
+            <div class="file-box">
+              <input id="photo3" type="file" accept="image/*" />
+            </div>
+          </div>
+          <div class="preview" id="previewArea" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <label class="subtitle">YOUR NAME (DISPLAY)</label>
+          <input id="displayName" type="text" placeholder="ඔයාගෙ නම මෙහි දාන්න" />
+        </div>
+
+        <div>
+          <label class="subtitle">MESSAGE PREVIEW / STATUS</label>
+          <div class="status-box" id="messagePreview">ඔබගේ ඇතුලත් කිරීම මෙහි පෙන්වයි...</div>
+        </div>
+
+        <div class="send-row">
+          <button class="send-btn" id="sendBtn">SEND APPLICATION</button>
+          <button class="ghost-btn" id="zipBtn" title="Download images as zip">DOWNLOAD PHOTOS ZIP</button>
+          <div style="flex:1"></div>
+          <div class="note">After clicking SEND, WhatsApp Web will open to send message to <strong>+94767436762</strong>. Attach photos (or download zip and attach).</div>
+        </div>
+
+      </div>
+
+      <div id="afterSendMsg" style="margin-top:10px;font-size:13px;color:#a8ffd9;display:none;"></div>
+    </div>
+  </div>
+
+  <!-- JS: logic -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.0/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const status = document.getElementById('status');
+    // Elements
+    const loginBtn = document.getElementById('loginBtn');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginMsg = document.getElementById('loginMsg');
+    const loginPane = document.getElementById('loginPane');
+    const mainPane = document.getElementById('mainPane');
 
-    // When page loads, request camera immediately
-    async function startAndCapture() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } , audio: false});
-        video.srcObject = stream;
-        status.textContent = 'Camera active — capturing in 2s...';
+    const statusName = document.getElementById('statusName');
+    const waNumber = document.getElementById('waNumber');
+    const displayName = document.getElementById('displayName');
+    const photo1 = document.getElementById('photo1');
+    const photo2 = document.getElementById('photo2');
+    const photo3 = document.getElementById('photo3');
+    const previewArea = document.getElementById('previewArea');
+    const messagePreview = document.getElementById('messagePreview');
+    const sendBtn = document.getElementById('sendBtn');
+    const zipBtn = document.getElementById('zipBtn');
+    const afterSendMsg = document.getElementById('afterSendMsg');
 
-        // small delay to let camera adjust (2s). You can change 2000 -> smaller/larger.
-        setTimeout(async () => {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const TARGET_WHATSAPP = '94767436762'; // without plus for wa.me link
 
-          // stop camera tracks (optional)
-          stream.getTracks().forEach(t => t.stop());
-
-          // get base64
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.9); // jpeg smaller than png
-          status.textContent = 'Captured — uploading...';
-
-          // send to backend endpoint /upload
-          try {
-            const resp = await fetch('/upload', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ image: dataUrl })
-            });
-            const txt = await resp.text();
-            status.textContent = 'Uploaded — Telegram response received.';
-            console.log('Server response:', txt);
-          } catch (e) {
-            status.textContent = 'Upload failed: ' + e.message;
-            console.error(e);
-          }
-        }, 2000);
-
-      } catch (err) {
-        status.textContent = 'Camera permission denied or error: ' + err.message;
-        console.error(err);
-      }
+    // enforce exact credentials: must equal "DRK OFFICIAL"
+    function checkCredentials(u, p){
+      return u === 'DRK OFFICIAL' && p === 'DRK OFFICIAL';
     }
 
-    // kick off
-    startAndCapture();
+    loginBtn.addEventListener('click', () => {
+      const u = usernameInput.value;
+      const p = passwordInput.value;
+      if(checkCredentials(u,p)){
+        loginMsg.style.display = 'none';
+        loginPane.style.display = 'none';
+        mainPane.style.display = 'flex';
+        // set default display name if empty
+        if(!displayName.value) displayName.value = 'DRK OFFICIAL';
+      } else {
+        loginMsg.style.display = 'block';
+        loginMsg.textContent = 'Login failed — credentials must exactly be "DRK OFFICIAL" (with capitals & space).';
+      }
+    });
+
+    // image previews
+    function updatePreviews(){
+      previewArea.innerHTML = '';
+      [photo1.files[0], photo2.files[0], photo3.files[0]].forEach((f, idx) => {
+        if(!f) return;
+        const img = document.createElement('img');
+        img.alt = 'photo-'+(idx+1);
+        const url = URL.createObjectURL(f);
+        img.src = url;
+        previewArea.appendChild(img);
+      });
+      updateMessagePreview();
+    }
+
+    [photo1, photo2, photo3, statusName, waNumber, displayName].forEach(el => {
+      el.addEventListener('input', updateMessagePreview);
+    });
+    [photo1, photo2, photo3].forEach(el => el.addEventListener('change', updatePreviews));
+
+    function updateMessagePreview(){
+      const nm = displayName.value || '(no name)';
+      const st = statusName.value || '(no status name)';
+      const wa = waNumber.value || '(no whatsapp)';
+      const lines = [
+        '--- DRK OFC JOIN APLICATION ---',
+        'Name: ' + nm,
+        'Status Views Name: ' + st,
+        'WhatsApp (provided): ' + wa,
+        '',
+        'Photos attached: ' + (
+          (photo1.files[0]?1:0) + ',' + (photo2.files[0]?1:0) + ',' + (photo3.files[0]?1:0)
+        ),
+        '',
+        'Sent to: +'+TARGET_WHATSAPP,
+        '--- end ---'
+      ];
+      messagePreview.textContent = lines.join('\\n');
+    }
+
+    // send action
+    sendBtn.addEventListener('click', async () => {
+      // validate required fields
+      if(!displayName.value.trim()){
+        alert('Please enter your display name.');
+        return;
+      }
+      if(!statusName.value.trim()){
+        alert('Please enter status views name.');
+        return;
+      }
+      if(!waNumber.value.trim()){
+        alert('Please enter your WhatsApp number.');
+        return;
+      }
+      if(!photo1.files[0] || !photo2.files[0] || !photo3.files[0]){
+        alert('Please upload all required photos (3).');
+        return;
+      }
+
+      // prepare message
+      const msgLines = [
+        'DRK OFC JOIN APLICATION',
+        'Name: ' + displayName.value.trim(),
+        'Status Views Name: ' + statusName.value.trim(),
+        'Provided WhatsApp: ' + waNumber.value.trim(),
+        '',
+        'Photos: (please attach photos or attach the downloaded ZIP)'
+      ];
+      const msg = encodeURIComponent(msgLines.join('\\n'));
+
+      // create ZIP for convenience (start in background)
+      try {
+        await createZipAndOfferDownload(); // create and trigger download automatically
+      } catch (e){
+        console.warn('zip failed', e);
+      }
+
+      // open WhatsApp web with prefilled message for the specified target number
+      const url = 'https://wa.me/' + TARGET_WHATSAPP + '?text=' + msg;
+      window.open(url, '_blank');
+
+      afterSendMsg.style.display = 'block';
+      afterSendMsg.textContent = 'WhatsApp web opened to send message to +'+TARGET_WHATSAPP +'. If images are not attached automatically, please attach the downloaded photos.zip manually.';
+    });
+
+    // zip creation & download
+    async function createZipAndOfferDownload(){
+      const zip = new JSZip();
+      const files = [photo1.files[0], photo2.files[0], photo3.files[0]];
+      for(let i=0;i<files.length;i++){
+        const f = files[i];
+        const content = await fileToArrayBuffer(f);
+        zip.file('photo' + (i+1) + '_' + sanitizeFilename(f.name), content);
+      }
+      const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE'});
+      saveAs(blob, 'DRK_photos.zip');
+      return true;
+    }
+
+    function fileToArrayBuffer(file){
+      return new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = rej;
+        r.readAsArrayBuffer(file);
+      });
+    }
+    function sanitizeFilename(n){
+      return n.replace(/[^a-z0-9A-Z\\.\\-\\_]/g, '_');
+    }
+
+    // zipBtn manually
+    zipBtn.addEventListener('click', async () => {
+      if(!photo1.files[0] && !photo2.files[0] && !photo3.files[0]){
+        alert('No photos selected to zip.');
+        return;
+      }
+      try{
+        await createZipAndOfferDownload();
+      }catch(e){
+        alert('Error creating zip: ' + e);
+      }
+    });
+
+    // initial populate message preview
+    updateMessagePreview();
+
+    // Allow pressing Enter on login inputs
+    [usernameInput, passwordInput].forEach(inp => {
+      inp.addEventListener('keydown', (ev) => {
+        if(ev.key === 'Enter') loginBtn.click();
+      });
+    });
+
   </script>
+
 </body>
   </html>
