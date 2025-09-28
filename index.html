@@ -1,390 +1,226 @@
 <!doctype html>
-<html lang="si">
+
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DRK OFC - Join Application</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Libre+Franklin:wght@300;600&display=swap" rel="stylesheet">
+  <title>Duggyffstore - Demo</title>
   <style>
-    :root{
-      --bg:#0f0f10;
-      --card:#111214;
-      --accent:#d80000; /* red accent */
-      --muted:#bfc4c8;
-      --glass: rgba(255,255,255,0.03);
-    }
-    *{box-sizing:border-box;font-family: 'Libre Franklin', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-    body{
-      margin:0;
-      min-height:100vh;
-      background: linear-gradient(180deg,#0b0b0c 0%, #121212 100%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#e9eef2;
-      padding:24px;
-    }
+    :root{--bg:#071124;--card:#071827;--accent:#06b6d4;--muted:#94a3b8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#02101a);color:#e6eef6;min-height:100vh}
+    header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+    .brand{font-weight:800}/* right-top hamburger with three lines */
+.hamburger{width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.lines{display:flex;flex-direction:column;gap:5px}
+.lines span{display:block;width:20px;height:3px;background:var(--accent);border-radius:3px}
 
-    .wrap{
-      width:100%;
-      max-width:920px;
-      display:grid;
-      grid-template-columns: 380px 1fr;
-      gap:28px;
-    }
+/* small popup when hamburger clicked */
+.menu-popup{position:absolute;right:0;top:56px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:10px;border-radius:8px;box-shadow:0 8px 24px rgba(2,6,23,0.6);min-width:160px;display:none}
+.menu-popup a{display:block;padding:8px;border-radius:6px;text-decoration:none;color:inherit}
+.menu-popup a:hover{background:rgba(255,255,255,0.02)}
 
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:16px;
-      padding:22px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.03);
-    }
+main{max-width:980px;margin:22px auto;padding:12px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
 
-    /* LOGIN CARD */
-    .login-card{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:12px;
-    }
-    .avatar-wrap{
-      position:relative;
-      width:96px;
-      height:96px;
-      border-radius:50%;
-      overflow:hidden;
-      background:linear-gradient(135deg,var(--glass), rgba(255,255,255,0.02));
-      border:4px solid rgba(255,255,255,0.03);
-    }
-    .avatar-wrap img{ width:100%; height:100%; object-fit:cover; display:block;}
-    .avatar-input{
-      margin-top:8px;
-      font-size:13px;
-      color:var(--muted);
-      text-align:center;
-    }
+.muted{color:var(--muted);font-size:13px}
+.uploads{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
+.upload{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;display:flex;flex-direction:column;gap:8px}
+.upload img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+.upload .desc{font-size:14px}
 
-    .field{ width:100%; margin-top:6px; }
-    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    input[type="text"], input[type="password"], input[type="tel"], input[type="file"]{
-      width:100%;
-      padding:10px 12px;
-      border-radius:10px;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.05);
-      color: #e9eef2;
-      outline:none;
-    }
-    input[type="file"]{ padding:8px; }
-    .btn{
-      display:inline-block;
-      padding:10px 16px;
-      border-radius:10px;
-      background:var(--accent);
-      color:white;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-      box-shadow: 0 6px 18px rgba(216,0,0,0.18);
-    }
-    .note { font-size:12px; color:#ffdddd; text-align:center; margin-top:6px; }
+/* login modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--card);padding:18px;border-radius:12px;max-width:420px;width:100%}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input[type=text],input[type=password],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.btn{display:inline-block;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#012;cursor:pointer;font-weight:700}
+.btn.danger{background:#ef4444;color:#fff}
+.small{font-size:13px;color:var(--muted)}
+.manage-list{display:grid;gap:10px;margin-top:10px}
+.manage-row{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
+.manage-row img{width:84px;height:60px;object-fit:cover;border-radius:6px}
 
-    /* APPLICATION CARD */
-    .app-head{
-      text-align:center;
-      margin-bottom:12px;
-    }
-    .app-title{
-      font-family: 'Montserrat', sans-serif;
-      font-size:28px;
-      letter-spacing:1px;
-      font-weight:800;
-      color:var(--accent);
-      margin:0;
-    }
-    .app-sub{
-      color:var(--muted);
-      margin-top:6px;
-      font-size:13px;
-    }
+@media(max-width:880px){header{padding:10px} .uploads{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
 
-    .form-grid{ display:grid; gap:12px; margin-top:8px; }
-    .small{ font-size:13px; color:var(--muted); margin-bottom:6px; }
-    .required{ color:#ff6b6b; margin-left:6px; font-weight:700; font-size:12px; }
-
-    .success{
-      display:none;
-      padding:12px;
-      border-radius:10px;
-      background:linear-gradient(90deg, rgba(24,120,24,0.12), rgba(24,120,24,0.06));
-      color:#cfead1;
-      border:1px solid rgba(24,120,24,0.14);
-    }
-
-    footer { text-align:center; margin-top:12px; color:var(--muted); font-size:12px; }
-
-    @media(max-width:880px){
-      .wrap{ grid-template-columns:1fr; }
-    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- LOGIN -->
-    <div class="card login-card" id="loginCard">
-      <div class="avatar-wrap" title="Upload profile photo (optional)">
-        <img id="loginAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect fill='%230f0f10' width='100%25' height='100%25'/><text x='50%25' y='50%25' fill='%23bbb' font-size='26' text-anchor='middle' dominant-baseline='middle'>DRK</text></svg>" alt="avatar">
+  <header>
+    <div class="brand">duggyffstore.com</div>
+    <div style="position:relative">
+      <div class="hamburger" id="hamburger" title="Menu">
+        <div class="lines"><span></span><span></span><span></span></div>
       </div>
-      <div class="avatar-input small">
-        <input id="avatarFile" type="file" accept="image/*">
-      </div>
-
-      <div style="width:100%; margin-top:6px;">
-        <div class="field">
-          <label>USERNAME</label>
-          <input id="username" type="text" placeholder="Type username exactly (DRK OFFICIAL)">
-        </div>
-        <div class="field">
-          <label>PASSWORD</label>
-          <input id="password" type="password" placeholder="Type password exactly (DRK OFFICIAL)">
-        </div>
-        <div style="display:flex; gap:8px; margin-top:12px;">
-          <button class="btn" id="loginBtn">LOGIN</button>
-          <button class="btn" id="clearBtn" style="background:#525252">CLEAR</button>
-        </div>
-        <div class="note" id="loginNote">User & Password must be <strong>DRK OFFICIAL</strong> (spaces & capitals important).</div>
+      <div class="menu-popup" id="menuPopup">
+        <!-- When clicked show "ADMIN PAGE" label -->
+        <a href="#" id="adminPageBtn">ADMIN PAGE</a>
       </div>
     </div>
+  </header>  <main>
+    <section class="card">
+      <h2>Uploaded Accounts</h2>
+      <p class="muted">ඔබට මෙහි පළකල accounts බලන්න පුළුවන්. Admin වන විට පමණක් upload/edit/delete කරගන්න පුළුවන්.</p>
+      <div id="uploads" class="uploads"></div>
+    </section><section class="card" style="margin-top:14px">
+  <h3>Public Gallery</h3>
+  <p class="muted">ඔබට gallery එකෙන් images හා account texts බලන්න, admin login කර upload කළ accounts ඒකේ දිස්වෙයි.</p>
+  <div id="galleryList" class="uploads"></div>
+</section>
 
-    <!-- APPLICATION -->
-    <div class="card" id="appCard" style="display:none;">
-      <div class="app-head">
-        <h1 class="app-title">DRK OFC JOIN APLICATION</h1>
-        <div class="app-sub">ඔබගේ විස්තර පුරවන්න — "ස්ටේටස් විව්ස්" හා "WhatsApp" අංකය සහ ෆොටෝ 2 ක් අවශ්‍යයි.</div>
-      </div>
-
-      <form id="applicationForm" class="form-grid">
-        <div>
-          <label class="small">YOUR STATUS VIEWS NAME</label>
-          <input id="statusName" name="statusName" type="text" placeholder="ස්ටේටස් විව්ස් නම ඇතුලත් කරන්න" required>
-        </div>
-
-        <div>
-          <label class="small">YOUR WHATSAPP NUMBER</label>
-          <input id="whatsapp" name="whatsapp" type="tel" placeholder="ඔයාගෙ වට්සැප් අන්කය  දාන්න" required>
-        </div>
-
-        <div>
-          <label class="small">UPLOAD YOUR FACE PHOTOS <span class="required">[ මෙය අනිවාර්ය්‍ය වේ ]</span></label>
-          <input id="face1" name="face1" type="file" accept="image/*" required>
-          <div style="height:8px;"></div>
-          <input id="face2" name="face2" type="file" accept="image/*" required>
-        </div>
-
-        <div>
-          <label class="small">COMMENTS (optional)</label>
-          <input id="comments" name="comments" type="text" placeholder="ඔබට කියන්න තියෙනවම්">
-        </div>
-
-        <div style="display:flex; gap:10px; align-items:center; margin-top:6px;">
-          <button type="button" class="btn" id="sendBtn">SEND APPLICATION</button>
-          <div id="statusMsg" class="success">Application prepared. පසුගිය සඳහන් සඳහාවට බලන්න.</div>
-        </div>
-
-        <div style="margin-top:6px; font-size:13px; color:var(--muted);">
-          <strong>Note:</strong> This form will try to <em>automatically</em> send an email using <code>EmailJS</code> if you configure your EmailJS credentials in the script (see comments). If not configured, a ZIP file (containing photos + info) will be created for download and your mail client will be opened to send the application to <strong>dinethnimsara281@gmail.com</strong>. (Browser security prevents auto-attaching files into the user's mail client.)
+  </main>  <!-- Login / Admin modal -->  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog">
+      <h3>Admin Login</h3>
+      <p class="small">Only admin can login. Wrong credentials will show: <strong>Only Can Login Admin</strong></p>
+      <form id="loginForm">
+        <label>Username</label>
+        <input id="username" type="text" autocomplete="off" required>
+        <label style="margin-top:8px">Password</label>
+        <input id="password" type="password" autocomplete="off" required>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <button class="btn" type="submit">Login</button>
+          <button id="cancelLogin" type="button" class="btn" style="background:#334155;color:#fff">Cancel</button>
         </div>
       </form>
-
-      <footer>DRK OFFC • High quality submission — red accent UI</footer>
     </div>
-  </div>
+  </div>  <!-- Admin Dashboard (shown after login) -->  <div id="adminPanel" style="display:none;position:fixed;right:18px;bottom:18px;z-index:1200;max-width:420px;width:100%">
+    <div class="card">
+      <h4>ADMIN PANEL</h4>
+      <p class="small">Logged in as admin — upload new accounts (photo + text). Public gallery will update immediately.</p>
+      <form id="uploadForm">
+        <label>Photo</label>
+        <input id="photoInput" type="file" accept="image/*" required>
+        <label style="margin-top:8px">Account Text</label>
+        <textarea id="acctText" rows="3" required></textarea>
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+          <button class="btn" type="submit">Upload Account</button>
+          <button id="logoutBtn" type="button" class="btn danger">Logout</button>
+        </div>
+      </form><h4 style="margin-top:12px">Manage Uploads</h4>
+  <div id="manageList" class="manage-list"></div>
+</div>
 
-  <!-- Libraries for fallback zip creation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  </div>  <script>
+    // === CONFIG ===
+    const ADMIN_USER = 'dineth&1122@@';
+    const ADMIN_PASS = 'dineth&1122@@';
+    // NOTE: storage is localStorage (browser). To replicate across devices you'd need a server.
+    // === END CONFIG ===
 
-  <!-- Optional EmailJS SDK: to enable automatic email sending from client-side (requires you to sign-up at https://www.emailjs.com and replace IDs below) -->
-  <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
-
-  <script>
-    // ---------- LOGIN LOGIC ----------
-    const LOGIN_USER = "DRK OFFICIAL";
-    const LOGIN_PASS = "DRK OFFICIAL";
-
-    const loginBtn = document.getElementById('loginBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const loginCard = document.getElementById('loginCard');
-    const appCard = document.getElementById('appCard');
-    const avatarFile = document.getElementById('avatarFile');
-    const loginAvatar = document.getElementById('loginAvatar');
-
-    avatarFile.addEventListener('change', e => {
-      const f = e.target.files[0];
-      if (!f) return;
-      const url = URL.createObjectURL(f);
-      loginAvatar.src = url;
+    // menu popup handling
+    const hamburger = document.getElementById('hamburger');
+    const popup = document.getElementById('menuPopup');
+    hamburger.addEventListener('click', (e)=>{
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+    document.addEventListener('click', (e)=>{
+      if(!hamburger.contains(e.target) && !popup.contains(e.target)) popup.style.display='none';
     });
 
-    clearBtn.addEventListener('click', ()=> {
-      usernameInput.value = '';
-      passwordInput.value = '';
-      avatarFile.value = '';
-      loginAvatar.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect fill='%230f0f10' width='100%25' height='100%25'/><text x='50%25' y='50%25' fill='%23bbb' font-size='26' text-anchor='middle' dominant-baseline='middle'>DRK</text></svg>";
-    });
+    // ADMIN PAGE click -> open login modal
+    document.getElementById('adminPageBtn').addEventListener('click', (e)=>{e.preventDefault(); openLogin(); popup.style.display='none';});
 
-    loginBtn.addEventListener('click', () => {
-      const u = usernameInput.value.trim();
-      const p = passwordInput.value.trim();
+    // modal controls
+    const modal = document.getElementById('modalBackdrop');
+    function openLogin(){ modal.style.display='flex'; document.getElementById('username').focus(); }
+    function closeLogin(){ modal.style.display='none'; }
+    document.getElementById('cancelLogin').addEventListener('click', closeLogin);
 
-      // Exact match including spaces and capitals => use direct equality
-      if (u === LOGIN_USER && p === LOGIN_PASS) {
-        // success
-        loginCard.style.display = 'none';
-        appCard.style.display = 'block';
-        window.scrollTo({ top:0, behavior:'smooth' });
+    // storage helpers
+    function loadUploads(){ try{ return JSON.parse(localStorage.getItem('dug_uploads')||'[]') }catch(e){return[]} }
+    function saveUploads(a){ localStorage.setItem('dug_uploads', JSON.stringify(a)) }
+
+    // render public gallery (main)
+    function renderPublic(){ const gallery = document.getElementById('galleryList'); const uploads = document.getElementById('uploads');
+      const arr = loadUploads();
+      gallery.innerHTML=''; uploads.innerHTML='';
+      if(!arr.length){ gallery.innerHTML='<div class="small muted">No accounts uploaded yet.</div>'; uploads.innerHTML=gallery.innerHTML; return }
+      arr.slice().reverse().forEach((it,idx)=>{
+        const card = document.createElement('div'); card.className='upload';
+        const img = document.createElement('img'); img.src = it.photo; card.appendChild(img);
+        const d = document.createElement('div'); d.className='desc'; d.innerText = it.text; card.appendChild(d);
+        // clicking a public card opens a full-view modal with text and image
+        card.addEventListener('click', ()=> openView(it));
+        gallery.appendChild(card);
+
+        // also in the top 'uploads' list simple cards
+        const mini = card.cloneNode(true);
+        uploads.appendChild(mini);
+      })
+    }
+
+    // view modal for single upload (reuse modal)
+    function openView(item){
+      // create quick view overlay
+      const overlay = document.createElement('div'); overlay.style.position='fixed'; overlay.style.inset=0; overlay.style.zIndex=2000; overlay.style.background='rgba(0,0,0,0.7)'; overlay.style.display='flex'; overlay.style.alignItems='center'; overlay.style.justifyContent='center';
+      const box = document.createElement('div'); box.style.background='var(--card)'; box.style.padding='16px'; box.style.borderRadius='10px'; box.style.maxWidth='720px'; box.style.width='90%';
+      const img = document.createElement('img'); img.src = item.photo; img.style.width='100%'; img.style.height='auto'; img.style.borderRadius='8px';
+      const p = document.createElement('p'); p.style.marginTop='8px'; p.innerText = item.text;
+      const close = document.createElement('button'); close.className='btn'; close.innerText='Close'; close.style.marginTop='10px'; close.onclick = ()=>document.body.removeChild(overlay);
+      box.appendChild(img); box.appendChild(p); box.appendChild(close); overlay.appendChild(box); document.body.appendChild(overlay);
+    }
+
+    // initial render
+    renderPublic();
+
+    // login logic
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+      if(u===ADMIN_USER && p===ADMIN_PASS){
+        sessionStorage.setItem('dug_admin','1');
+        closeLogin(); showAdminPanel();
       } else {
-        alert('Login failed — username/password must be exactly: DRK OFFICIAL (spaces and capitals required).');
+        alert('Only Can Login Admin');
       }
     });
 
-    // ---------- APPLICATION SUBMIT LOGIC ----------
-    const sendBtn = document.getElementById('sendBtn');
-    const applicationForm = document.getElementById('applicationForm');
-    const statusMsg = document.getElementById('statusMsg');
+    // show admin panel
+    function showAdminPanel(){ document.getElementById('adminPanel').style.display='block'; renderManage(); }
+    function hideAdminPanel(){ document.getElementById('adminPanel').style.display='none'; }
 
-    // ---- EmailJS configuration (optional) ----
-    // To enable auto-email from client, sign up at https://www.emailjs.com
-    // Then replace the placeholders below:
-    const USE_EMAILJS = false; // set true if you set EmailJS IDs
-    const EMAILJS_USER_ID = 'YOUR_EMAILJS_USER_ID';      // e.g. 'user_xxx'
-    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';       // e.g. 'service_xxx'
-    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // e.g. 'template_xxx'
-    // Template should accept fields: statusName, whatsapp, comments, and attachments (file inputs named face1, face2)
-    if (USE_EMAILJS && (EMAILJS_USER_ID && EMAILJS_USER_ID !== 'YOUR_EMAILJS_USER_ID')) {
-      try {
-        emailjs.init(EMAILJS_USER_ID);
-      } catch(e){
-        console.warn('EmailJS init failed', e);
-      }
-    }
+    // if session already logged in show panel
+    if(sessionStorage.getItem('dug_admin')==='1') showAdminPanel();
 
-    sendBtn.addEventListener('click', async () => {
-      // validate required fields
-      const statusName = document.getElementById('statusName').value.trim();
-      const whatsapp = document.getElementById('whatsapp').value.trim();
-      const face1 = document.getElementById('face1').files[0];
-      const face2 = document.getElementById('face2').files[0];
-      const comments = document.getElementById('comments').value.trim();
-
-      if (!statusName || !whatsapp) {
-        alert('කරුණාකර ඔබේ නම සහ වට්සැප් අංකය පුරවන්න.');
-        return;
-      }
-      if (!face1 || !face2) {
-        alert('කරුණාකර දෙපේාරූ ෆොටෝ 2 ක් upload කරන්න — මෙය අනිවාර්ය වේ.');
-        return;
-      }
-
-      // If EmailJS is configured (user's choice), try to send directly
-      if (USE_EMAILJS && EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID' && EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID') {
-        try {
-          // Build a FormData and use emailjs sendForm or send with attachments
-          // NOTE: EmailJS client-side attachment support varies — follow EmailJS docs and create a template with file inputs
-          const fd = new FormData();
-          fd.append('statusName', statusName);
-          fd.append('whatsapp', whatsapp);
-          fd.append('comments', comments);
-          fd.append('face1', face1, face1.name);
-          fd.append('face2', face2, face2.name);
-
-          // emailjs.sendForm expects a <form>. We'll create a temporary form.
-          const tmpForm = document.createElement('form');
-          tmpForm.style.display = 'none';
-          tmpForm.appendChild(document.getElementById('statusName').cloneNode());
-          tmpForm.appendChild(document.getElementById('whatsapp').cloneNode());
-          // instead, use emailjs.send (advanced) — but EmailJS SDK doc specifics are needed.
-          // For simplicity we'll attempt sendForm:
-          emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, applicationForm)
-          .then(function(){ 
-            alert('Application sent automatically via EmailJS to dinethnimsara281@gmail.com');
-            statusMsg.style.display = 'block';
-          }, function(err){
-            console.error('EmailJS error:', err);
-            alert('EmailJS send failed — falling back to manual download + mailto.');
-            fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2});
-          });
-
-          return;
-        } catch (e) {
-          console.warn('EmailJS exception', e);
-          // fallback below
-        }
-      }
-
-      // Default fallback: create ZIP (info + images) and open mail client with mailto to let user attach the zip.
-      fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2});
+    // upload form
+    const uploadForm = document.getElementById('uploadForm');
+    uploadForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(sessionStorage.getItem('dug_admin')!=='1') return alert('Only admin can upload');
+      const file = document.getElementById('photoInput').files[0];
+      const text = document.getElementById('acctText').value.trim();
+      if(!file || !text) return alert('Photo and text required');
+      const reader = new FileReader(); reader.onload = ()=>{
+        const arr = loadUploads(); arr.push({photo:reader.result,text}); saveUploads(arr); renderPublic(); renderManage(); uploadForm.reset(); alert('Uploaded successfully');
+      }; reader.readAsDataURL(file);
     });
 
-    async function fallbackCreateZipAndMail({statusName, whatsapp, comments, face1, face2}) {
-      try {
-        const zip = new JSZip();
-        // add text info file
-        const infoTxt = `STATUS NAME: ${statusName}\nWHATSAPP: ${whatsapp}\nCOMMENTS: ${comments}\nSUBMIT TO: dinethnimsara281@gmail.com\nSUBMITTED_AT: ${new Date().toISOString()}\n`;
-        zip.file("application_info.txt", infoTxt);
+    // manage list render (admin-only)
+    function renderManage(){ const cont = document.getElementById('manageList'); cont.innerHTML=''; const arr = loadUploads(); if(!arr.length){ cont.innerHTML='<div class="small muted">No uploads.</div>'; return }
+      arr.slice().reverse().forEach((it,i)=>{
+        const row = document.createElement('div'); row.className='manage-row';
+        const img = document.createElement('img'); img.src=it.photo;
+        const txt = document.createElement('div'); txt.style.flex='1'; txt.innerText = it.text;
+        const del = document.createElement('button'); del.className='btn danger'; del.innerText='Delete';
+        del.onclick = ()=>{ if(!confirm('Delete this upload?')) return; const full = loadUploads(); const idx = full.length-1-i; full.splice(idx,1); saveUploads(full); renderManage(); renderPublic(); }
+        row.appendChild(img); row.appendChild(txt); row.appendChild(del); cont.appendChild(row);
+      }) }
 
-        // add images as-is
-        const f1 = await readFileAsArrayBuffer(face1);
-        const f2 = await readFileAsArrayBuffer(face2);
-        zip.file(sanitizeFilename(face1.name || 'face1.jpg'), f1);
-        zip.file(sanitizeFilename(face2.name || 'face2.jpg'), f2);
+    // logout
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{ sessionStorage.removeItem('dug_admin'); hideAdminPanel(); alert('Logged out'); });
 
-        const blob = await zip.generateAsync({type:"blob", compression: "DEFLATE", compressionOptions:{level:6}});
-        const filename = `DRK_application_${Date.now()}.zip`;
-        saveAs(blob, filename);
+    // close modal on ESC
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeLogin(); });
 
-        // prepare mailto
-        const subject = encodeURIComponent('DRK OFC - New Join Application');
-        const bodyLines = [
-          `Hello,`,
-          ``,
-          `I have prepared my application for DRK OFC.`,
-          `STATUS NAME: ${statusName}`,
-          `WHATSAPP: ${whatsapp}`,
-          `COMMENTS: ${comments}`,
-          ``,
-          `I have downloaded the application ZIP named: ${filename}`,
-          `Please attach it to an email and send to: dinethnimsara281@gmail.com`,
-          ``,
-          `-- Sent from DRK OFC application page`
-        ];
-        const body = encodeURIComponent(bodyLines.join('\n'));
-        // Open mail client
-        window.location.href = `mailto:dinethnimsara281@gmail.com?subject=${subject}&body=${body}`;
+    // clicking outside modal closes
+    document.getElementById('modalBackdrop').addEventListener('click', (e)=>{ if(e.target===document.getElementById('modalBackdrop')) closeLogin(); });
 
-        alert('ZIP downloaded. ඔබේ mail client එක open වෙන් අතර, download කල ZIP එක attach කරගෙන dinethnimsara281@gmail.com වෙත mail එක යවන්න.');
-        statusMsg.style.display = 'block';
-      } catch (err) {
-        console.error(err);
-        alert('අවසන් fallback දෝෂයක් — console වල error බලන්න.');
-      }
-    }
+    // small UX: clicking brand scrolls to top and close panels
+    document.querySelector('.brand').addEventListener('click', ()=>{ window.scrollTo({top:0,behavior:'smooth'}); popup.style.display='none'; });
 
-    function readFileAsArrayBuffer(file) {
-      return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result);
-        fr.onerror = reject;
-        fr.readAsArrayBuffer(file);
-      });
-    }
-
-    function sanitizeFilename(name) {
-      return name.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_').slice(0,120);
-    }
-  </script>
-</body>
-  </html>
+    // ensure public gallery updates on storage change (other tab)
+    window.addEventListener('storage', ()=>{ renderPublic(); if(sessionStorage.getItem('dug_admin')==='1') renderManage(); });
+  </script></body>
+        </html>
